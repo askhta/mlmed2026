@@ -1,22 +1,135 @@
 \documentclass[conference]{IEEEtran}
 
-\title{This is your report}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\title{ECG Heartbeat Classification Using a Feedforward Neural Network}
+
+\author{
+\IEEEauthorblockN{Student Name}
+\IEEEauthorblockA{
+Department of Computer Science\\
+University Name\\
+Email: student@email.com
+}
+}
 
 \begin{document}
 
 \maketitle
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\begin{abstract}
+Electrocardiogram (ECG) analysis is essential for detecting cardiac arrhythmias.
+This paper presents a machine learning approach for automatic ECG heartbeat
+classification using the MIT-BIH Arrhythmia dataset. A feedforward neural
+network implemented in PyTorch is trained to classify ECG heartbeats into
+five categories. The dataset, model architecture, training procedure, and
+hyperparameter experiments are described and discussed.
+\end{abstract}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\begin{IEEEkeywords}
+ECG classification, neural networks, MIT-BIH dataset, deep learning, biomedical signals
+\end{IEEEkeywords}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\section{Introduction}
+Electrocardiograms (ECGs) provide valuable information about the electrical
+activity of the heart and are widely used for diagnosing cardiovascular
+diseases. Manual interpretation of ECG recordings is time-consuming and
+subject to human error, especially when large-scale data is involved.
+Consequently, automated ECG classification methods based on machine learning
+have attracted significant attention.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+In this work, we focus on supervised ECG heartbeat classification using a
+fully connected neural network trained on the MIT-BIH Arrhythmia dataset.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\section{Dataset Description}
+The dataset used in this study is derived from the
+\textbf{MIT-BIH Arrhythmia Dataset}, a standard benchmark for ECG analysis.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\subsection{Data Representation}
+Each sample corresponds to a single heartbeat segment:
+\begin{itemize}
+    \item 187 numerical features representing ECG waveform amplitudes
+    \item One label indicating the heartbeat class
+\end{itemize}
+
+\subsection{Class Labels}
+The dataset contains five heartbeat categories:
+\begin{enumerate}
+    \item Normal beat (N)
+    \item Supraventricular ectopic beat (S)
+    \item Ventricular ectopic beat (V)
+    \item Fusion beat (F)
+    \item Unknown beat (Q)
+\end{enumerate}
+
+\subsection{Train-Test Split}
+Two predefined files are provided:
+\begin{itemize}
+    \item \texttt{mitbih\_train.csv} for training
+    \item \texttt{mitbih\_test.csv} for testing
+\end{itemize}
+The input data is already scaled and no additional normalization is applied.
+
+\section{Methodology}
+\subsection{Data Loading}
+A custom PyTorch \texttt{Dataset} class is implemented to load ECG features
+and labels. Mini-batch training is enabled using the \texttt{DataLoader}
+with shuffled training data.
+
+\subsection{Neural Network Architecture}
+The proposed model is a feedforward neural network consisting of:
+\begin{itemize}
+    \item Input layer with 187 neurons
+    \item Two hidden layers, each with $2 \times 187$ neurons
+    \item GELU activation functions
+    \item Output layer with 5 neurons
+\end{itemize}
+
+\subsection{Training Setup}
+The network is trained using:
+\begin{itemize}
+    \item Loss function: Cross-Entropy Loss
+    \item Optimizer: Adam
+    \item Learning rate: $1 \times 10^{-4}$
+\end{itemize}
+GPU acceleration is used when available.
+
+\section{Experiments}
+Several hyperparameters were adjusted to evaluate their effect on model
+performance.
+
+\subsection{Batch Size}
+Smaller batch sizes resulted in noisier gradients, while larger batch sizes
+improved training stability but required more memory. A batch size of 32
+provided a good balance.
+
+\subsection{Learning Rate}
+High learning rates caused unstable training, whereas very small values led
+to slow convergence. A learning rate of $10^{-4}$ achieved stable optimization.
+
+\subsection{Number of Epochs}
+Increasing the number of epochs improved accuracy up to a certain point.
+Excessive training may result in overfitting.
+
+\section{Results and Discussion}
+The model successfully learns meaningful patterns from ECG heartbeat signals
+despite its simple architecture. While the achieved performance is reasonable,
+more advanced architectures such as convolutional or recurrent neural networks
+could further improve classification accuracy.
+
+\section{Conclusion}
+This paper presented a feedforward neural network approach for ECG heartbeat
+classification using the MIT-BIH Arrhythmia dataset. The dataset characteristics,
+model design, training strategy, and hyperparameter analysis were discussed.
+The results demonstrate that even simple neural networks can serve as effective
+baselines for biomedical signal classification tasks.
+
+\section*{Repository}
+The complete source code, including the Python training script, Jupyter
+notebook, and this report, is available in the corresponding GitHub repository.
 
 \end{document}
